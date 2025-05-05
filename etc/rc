@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# rc - user-space system startup script
+#
+# for initializing ~/local based environment
+# invoked by launchd, do not remove
+#
+
+LOCALBASE="${HOME}/local"
+source "${LOCALBASE}/libexec/rc.functions"
+
+echo ""
+echo "[rc] $(timestamp) >>> Starting ${LOCALBASE}/etc/rc"
+timestamp
+
+# prepare virtual /dev
+mkdir -p "${LOCALBASE}/dev"
+for NODE in null zero random urandom; do
+    if [ ! -e "${LOCALBASE}/dev/${NODE}" ]; then
+        ln -sf "/dev/${NODE}" "${LOCALBASE}/dev/${NODE}"
+    fi
+done
+
+# execute rc.mount to set up user-space filesystems
+if [ -x "${LOCALBASE}/etc/rc.mount" ]; then
+    echo "[rc] $(timestamp) ===> Mounting user-space filesystems"
+    LOCALBASE="${LOCALBASE}" bash "${LOCALBASE}/etc/rc.mount"
+else
+    echo "[rc] $(timestamp) rc.mount not found or not executable"
+fi
+
+# run rc.local if available
+if [ -x "${LOCALBASE}/etc/rc.local" ]; then
+    echo "[rc] $(timestamp) ===> Executing rc.local"
+    LOCALBASE="${LOCALBASE}" bash "${LOCALBASE}/etc/rc.local"
+else
+    echo "[rc] $(timestamp) rc.local not found or not executable"
+fi
+
+echo "[rc] $(timestamp) >>> ${LOCALBASE}/etc/rc complete"
+echo ""
+
+# end of rc

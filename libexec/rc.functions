@@ -1,0 +1,11 @@
+#
+# rc.functions - sourced by local-rc scripts only, not executable
+#
+# Provides minimal helper functions used across rc, rc.local, rc.shutdown, etc.
+# Each function is standalone, portable, and designed for silent operation unless invoked.
+#
+
+# returns an ISO 8601-style timestamp (used for consistent log output)
+timestamp() {
+    LANG=C date "+%Y-%m-%d %H:%M:%S"
+}

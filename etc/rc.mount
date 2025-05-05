@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# rc.mount - user-space filesystem mount script
+#
+# invoked early by ~/local/etc/rc
+# for RAM disks, sshfs, bindfs, and other virtual mounts
+#
+
+source "${LOCALBASE}/libexec/rc.functions"
+
+#
+# mount commands go here
+#
+
+# ramdisk
+RAMDISK_SIZE=131072
+RAMDISK_MOUNT_POINT="${LOCALBASE}/mnt/ramdisk"
+RAMDISK_DEVNAME=$(hdiutil attach -nomount ram://${RAMDISK_SIZE} | tail -n1 | awk '{print $1}')
+RAMDISK_RAWDEVNAME="/dev/r$(basename "${RAMDISK_DEVNAME}")"
+
+if [ -n "${RAMDISK_DEVNAME}" ] && [ -e "${RAMDISK_RAWDEVNAME}" ]; then
+    echo "[rc.mount] $(timestamp) ===> Creating filesystem on ${RAMDISK_RAWDEVNAME}"
+        newfs_hfs "${RAMDISK_RAWDEVNAME}" && \
+        mkdir -p "${RAMDISK_MOUNT_POINT}" && \
+        mount -t hfs "${RAMDISK_DEVNAME}" "${RAMDISK_MOUNT_POINT}" && \
+        echo "[rc.mount] $(timestamp) Mounted ramdisk at ${RAMDISK_MOUNT_POINT}" || \
+        echo "[rc.mount] $(timestamp) Failed to mount ramdisk" >&2
+else
+    echo "[rc.mount] $(timestamp) Failed to create ramdisk (device not found)" >&2
+fi
+
+# end of rc.mount

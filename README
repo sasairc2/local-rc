@@ -1,0 +1,36 @@
+local-rc - user-space init scripts for ~/local
+=============================================
+
+This is a minimal set of init scripts intended for user-space use on macOS, using launchd and ~/local.
+It is designed for users who prefer to manage their own environment without root privileges.
+
+It provides:
+  rc           - main init script, run at login
+  rc.local     - user-defined daemon startup (e.g. dcron)
+  rc.mount     - mounts virtual filesystems (e.g. RAM disk)
+  rc.shutdown  - optional logout-time cleanup
+  rc.functions - shared utility functions (e.g. timestamp)
+
+Usage:
+  1. Place all scripts in ~/local/etc and make them executable.
+  2. Create log directories:
+       mkdir -p ~/local/var/log
+       mkdir -p ~/local/var/spool/cron/{crontabs,cronstamps}
+  3. Use provided plist files for launchd:
+       ln -s /Users/yourname/local/etc/local.rc.plist /Users/yourname/Library/LaunchAgents/local.rc.plist
+       launchctl load ~/Library/LaunchAgents/local.rc.plist
+     Optionally:
+       ln -s /Users/yourname/local/etc/local.rc.shutdown.plist /Users/yourname/Library/LaunchAgents/local.rc.shutdown.plist
+       launchctl load ~/Library/LaunchAgents/local.rc.shutdown.plist
+
+Notes:
+  - All paths must be absolute in plist symlinks. Relative ones will fail.
+  - rc.local and rc.shutdown contain example dcron lines. Adjust as needed.
+  - Log output: ~/local/var/log/local.rc.out and local.rc.err
+
+This system is simple, readable, and self-contained. There is no install script. Read the code and adapt as needed.
+
+---
+
+Author: sasairc
+License: MIT

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Usage:
+  - Place this file in ~/local/etc/local.rc.shutdown.plist
+  - Create a symbolic link using **full absolute paths**:
+        ln -s /Users/yourname/local/etc/local.rc.shutdown.plist /Users/yourname/Library/LaunchAgents/local.rc.shutdown.plist
+
+        Use absolute paths instead of relative ones.
+        Relative symlinks may cause `launchctl` to fail with:
+        "Unload failed: 5: Input/output error"
+  - Load with:
+        launchctl load ~/Library/LaunchAgents/local.rc.shutdown.plist
+  - Unload with:
+        launchctl unload ~/Library/LaunchAgents/local.rc.shutdown.plist
+  - Your rc.shutdown script should be at:
+        ~/local/etc/rc.shutdown (executable)
+  - Log output:
+        stdout: ~/local/var/log/local.rc.out
+        stderr: ~/local/var/log/local.rc.err
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.rc.shutdown</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/yourname/local/etc/rc.shutdown</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>KeepAlive</key>
+    <false/>
+
+    <key>LimitLoadToSessionType</key>
+    <array>
+        <string>Aqua</string>
+    </array>
+
+    <key>LaunchOnlyOnce</key>
+    <true/>
+
+    <!-- Optional: log stdout and stderr to temporary files -->
+    <key>StandardOutPath</key>
+    <string>/Users/yourname/local/var/log/local.rc.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/yourname/local/var/log/local.rc.err</string>
+</dict>
+</plist>

@@ -1,0 +1,17 @@
+--- chuser.c.orig	2025-05-06 01:50:37
++++ chuser.c	2025-05-06 01:51:03
+@@ -33,10 +33,10 @@
+ 	 * Change running state to the user in question
+ 	 */
+ 
+-	if (initgroups(user, pas->pw_gid) < 0) {
+-		printlogf(LOG_ERR, "initgroups failed: %s %s\n", user, strerror(errno));
+-		return(-1);
+-	}
++	//if (initgroups(user, pas->pw_gid) < 0) {
++	//	printlogf(LOG_ERR, "initgroups failed: %s %s\n", user, strerror(errno));
++	//	return(-1);
++	//}
+ 	if (setregid(pas->pw_gid, pas->pw_gid) < 0) {
+ 		printlogf(LOG_ERR, "setregid failed: %s %d\n", user, pas->pw_gid);
+ 		return(-1);

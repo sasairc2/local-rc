@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# rc.shutdown - user-defined local shutdown script
+#
+# invoked by launchd at user logout or session termination
+# for stopping user-space services and cleanup tasks
+#
+
+LOCALBASE="${HOME}/local"
+source "${LOCALBASE}/libexec/rc.functions"
+
+#
+# user-space shutdown tasks begin here
+#
+
+# example: stop personal cron daemon (dcron)
+# adjust or remove as needed for your environment
+echo "[rc.shutdown] $(timestamp) ===> Stopping dcron"
+pkill -TERM -f "${LOCALBASE}/sbin/crond" && \
+    echo "[rc.shutdown] $(timestamp) dcron stopped" || \
+    echo "[rc.shutdown] $(timestamp) dcron not running"
+
+# unmount RAM disk
+RAMDISK_MOUNT_POINT="${LOCALBASE}/mnt/ramdisk"
+echo "[rc.shutdown] $(timestamp) ===> Unmounting RAM disk at ${RAMDISK_MOUNT_POINT}"
+if mount | grep -q "${RAMDISK_MOUNT_POINT}"; then
+    umount "${RAMDISK_MOUNT_POINT}" && \
+        echo "[rc.shutdown] $(timestamp) RAM disk unmounted" || \
+        echo "[rc.shutdown] $(timestamp) Failed to unmount RAM disk"
+else
+    echo "[rc.shutdown] $(timestamp) RAM disk not mounted, skipping"
+fi
+
+# end of rc.shutdown

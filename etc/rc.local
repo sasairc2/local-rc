@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# rc.local - user-defined local startup script
+#
+# invoked by ~/local/etc/rc
+# for user-space services and custom init tasks
+#
+
+source "${LOCALBASE}/libexec/rc.functions"
+
+#
+# user-space tasks begin here
+#
+
+# example: start personal cron daemon
+# adjust or remove as needed for your environment
+echo "[rc.local] $(timestamp) ===> Starting dcron"
+"${LOCALBASE}/sbin/crond" \
+    -s "${LOCALBASE}/var/spool/cron/crontabs" \
+    -t "${LOCALBASE}/var/spool/cron/cronstamps" && \
+    echo "[rc.local] $(timestamp) dcron started" || \
+    echo "[rc.local] $(timestamp) Failed to start dcron" >&2
+
+# periodic tasks should be handled by cron
+# see: ~/local/etc/cron.d/ or ~/local/var/spool/cron/crontabs/
+
+# end of rc.local

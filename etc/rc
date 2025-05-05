@@ -16,9 +16,7 @@ timestamp
 # prepare virtual /dev
 mkdir -p "${LOCALBASE}/dev"
 for NODE in null zero random urandom; do
-    if [ ! -e "${LOCALBASE}/dev/${NODE}" ]; then
-        ln -sf "/dev/${NODE}" "${LOCALBASE}/dev/${NODE}"
-    fi
+    ln -sf "/dev/${NODE}" "${LOCALBASE}/dev/${NODE}"
 done
 
 # execute rc.mount to set up user-space filesystems

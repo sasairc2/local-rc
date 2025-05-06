@@ -20,13 +20,18 @@ pkill -TERM -f "${LOCALBASE}/sbin/crond" && \
     echo "[rc.shutdown] $(timestamp) dcron stopped" || \
     echo "[rc.shutdown] $(timestamp) dcron not running"
 
-# unmount RAM disk
+# unmount ramdisk
 RAMDISK_MOUNT_POINT="${LOCALBASE}/mnt/ramdisk"
-echo "[rc.shutdown] $(timestamp) ===> Unmounting RAM disk at ${RAMDISK_MOUNT_POINT}"
-if mount | grep -q "${RAMDISK_MOUNT_POINT}"; then
+
+echo "[rc.shutdown] $(timestamp) ===> Unmounting RAM disk"
+if df | grep "${RAMDISK_MOUNT_POINT}" > /dev/null; then
+    RAMDISK_DEVNAME=$(df | grep "${RAMDISK_MOUNT_POINT}" | awk '{print $1}')
     umount "${RAMDISK_MOUNT_POINT}" && \
         echo "[rc.shutdown] $(timestamp) RAM disk unmounted" || \
         echo "[rc.shutdown] $(timestamp) Failed to unmount RAM disk"
+    hdiutil detach "${RAMDISK_DEVNAME}" && \
+        echo "[rc.shutdown] $(timestamp) Detached ${RAMDISK_DEVNAME}" || \
+        echo "[rc.shutdown] $(timestamp) Failed to detach RAM disk"
 else
     echo "[rc.shutdown] $(timestamp) RAM disk not mounted, skipping"
 fi

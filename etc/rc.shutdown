@@ -28,10 +28,10 @@ if df | grep "${RAMDISK_MOUNT_POINT}" > /dev/null; then
     RAMDISK_DEVNAME=$(df | grep "${RAMDISK_MOUNT_POINT}" | awk '{print $1}')
     umount "${RAMDISK_MOUNT_POINT}" && \
         echo "[rc.shutdown] $(timestamp) RAM disk unmounted" || \
-        echo "[rc.shutdown] $(timestamp) Failed to unmount RAM disk"
+        echo "[rc.shutdown] $(timestamp) Failed to unmount RAM disk" >&2
     hdiutil detach "${RAMDISK_DEVNAME}" && \
         echo "[rc.shutdown] $(timestamp) Detached ${RAMDISK_DEVNAME}" || \
-        echo "[rc.shutdown] $(timestamp) Failed to detach RAM disk"
+        echo "[rc.shutdown] $(timestamp) Failed to detach RAM disk" >&2
 else
     echo "[rc.shutdown] $(timestamp) RAM disk not mounted, skipping"
 fi

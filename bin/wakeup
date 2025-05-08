@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# wakeup - user-defined wake-from-sleep script
+#
+# invoked by sleepwatcher when system wakes from sleep
+# delegates to ~/local/etc/rc
+#
+# Usage:
+#   ln -s ~/local/bin/wakeup ~/.wakeup
+#
+
+LOCALBASE="${HOME}/local"
+RC_OUT="${LOCALBASE}/var/log/local.rc.out"
+RC_ERR="${LOCALBASE}/var/log/local.rc.err"
+
+exec "${LOCALBASE}/etc/rc" >> "${RC_OUT}" 2>> "${RC_ERR}"

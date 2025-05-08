@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# sleep - user-defined pre-suspend script
+#
+# invoked by sleepwatcher before system goes to sleep
+# delegates to ~/local/etc/rc.shutdown
+#
+# Usage:
+#   ln -s ~/local/bin/sleep ~/.sleep
+#
+
+LOCALBASE="${HOME}/local"
+RC_OUT="${LOCALBASE}/var/log/local.rc.out"
+RC_ERR="${LOCALBASE}/var/log/local.rc.err"
+
+exec "${LOCALBASE}/etc/rc.shutdown" >> "${RC_OUT}" 2>> "${RC_ERR}"

@@ -22,6 +22,9 @@ Usage:
      Optionally:
        ln -s /Users/yourname/local/etc/local.rc.shutdown.plist /Users/yourname/Library/LaunchAgents/local.rc.shutdown.plist
        launchctl load ~/Library/LaunchAgents/local.rc.shutdown.plist
+  4. Optional sleepwatcher integration  
+       ln -s ~/local/bin/sw-sleep ~/.sleep  
+       ln -s ~/local/bin/sw-wakeup ~/.wakeup
 
 Notes:
   - All paths must be absolute in plist symlinks. Relative ones will fail.

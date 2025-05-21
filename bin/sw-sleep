@@ -1,12 +1,12 @@
 #!/bin/bash
 #
-# sleep - user-defined pre-suspend script
+# sw-sleep - user-defined pre-suspend script
 #
 # invoked by sleepwatcher before system goes to sleep
 # delegates to ~/local/etc/rc.shutdown
 #
 # Usage:
-#   ln -s ~/local/bin/sleep ~/.sleep
+#   ln -s ~/local/bin/sw-sleep ~/.sleep
 #
 
 LOCALBASE="${HOME}/local"

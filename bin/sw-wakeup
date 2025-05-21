@@ -1,12 +1,12 @@
 #!/bin/bash
 #
-# wakeup - user-defined wake-from-sleep script
+# sw-wakeup - user-defined wake-from-sleep script
 #
 # invoked by sleepwatcher when system wakes from sleep
 # delegates to ~/local/etc/rc
 #
 # Usage:
-#   ln -s ~/local/bin/wakeup ~/.wakeup
+#   ln -s ~/local/bin/sw-wakeup ~/.wakeup
 #
 
 LOCALBASE="${HOME}/local"
